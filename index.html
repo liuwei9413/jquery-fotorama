@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* { margin: 0; padding: 0;}
+		.switch {
+			border-bottom: 1px dashed;
+			cursor: pointer;
+		}
+
+	  .fotorama-with-numbers .fotorama__html div {
+	    background-color: #fff;
+	    width: 2em;
+	    height: 2em;
+	    text-align: center;
+	    line-height: 2em;
+	    border-radius: 1em;
+	    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+	    position: absolute;
+	    top: 1em;
+	    left: 1em;
+	  }
+	</style>
+</head>
+<body>
+	<p>
+		<span class="switch" id="shuffle"><i class="icon-random"></i> Shuffle again</span>
+	</p>
+
+	<!--参数说明：
+		api地址 http://fotorama.io/customize/
+		设置图片容器宽高  	data-width="800" data-height="600"
+		自适应  宽度百分比  data-width="100%"  宽高比：data-ratio="800/600"
+		限制宽高  			data-minwidth="400" data-maxwidth="1000" data-minheight="300" data-maxheight="100%"
+		宽高均全屏显示  	data-width="100%" data-height='100%'
+
+		导航为缩略图		data-nav="thumbs"
+		导航隐藏			data-nav="none" 	
+		导航定位			data-navposition="top"
+
+
+		缩略图路径			<a href="1.jpg"><img src="1_thumb.jpg"></a>
+		缩略图尺寸(64*64)   data-thumbwidth="100" data-thumbheight="50"
+
+		全屏显示			data-allowfullscreen="true" 点击右上角全屏按钮 可全屏显示
+							data-allowfullscreen="native" 整个全屏 会遮挡浏览器
+
+		HTML				<div>one</div><div>two</div>..  div也可以切换
+							class="fotorama__select"	文字可选中
+
+		图片尺寸适应容器	data-fit="contain"  在fotorama容易中适当拉伸 (默认)
+							data-fit="cover"	完全覆盖fotorama 
+							data-fit="scaledown"	适当缩放
+							data-fit="none"		图片原尺寸
+
+		动画过渡效果		data-transition="slide"		默认值 滚动
+							data-transition="crossfade"	淡出
+							混合 data-clicktransition="crossfade" 
+							swape为slide效果 cilck为crossfade效果
+		
+		字幕				data-caption="One"
+
+		哈希				data-hash="true" 切换后地址栏对应有当前下标的hash值 如下标1 hash为#1
+							<img id="hello"> 修改hash为#hello
+
+		循环滚动 			data-loop="true"
+
+		自动播放			data-autoplay="true" 默认为5000ms
+							data-autoplay="3000" 改为3000ms
+							data-stopautoplayontouch="false" touch是否停止自动滚动(注意是touch事件触发 而不是鼠标移入 默认为false)	
+
+		打乱顺序			data-shuffle="true"	 打乱轮播图片顺序
+
+		按键切换			data-keyboard="true" 左右按键切换
+							data-keyboard='{"space": true, "home": true, "end": true, "up": true, "down": true}' 其他按键切换 	
+
+		切换方式开关		data-arrows="false" 点击箭头切换
+							data-click="false"	点击屏幕切换
+							data-swipe="false"  滑动切换							
+
+		从右往左			data-direction="rtl"
+
+		初始化				默认只要设置div.class为fotorama 自动初始化
+							data-auto="false" 取消自动初始化
+							$('.fotorama').fotorama(); 手动初始化
+
+							加载数据： 	$('.fotorama').fotorama({
+										    data: [
+										      {img: '1.jpg', thumb: '1-thumb.jpg'},
+										      {img: '2.jpg', thumb: '2-thumb.jpg'}
+										    ]
+										});
+							完整的数据可能如下：
+							{
+							  img: '1.jpg',
+							  thumb: '1-thumb.jpg',
+							  full: '1-full.jpg', // Separate image for the fullscreen mode.
+							  video: 'http://youtu.be/C3lWwBslWqg', // Youtube, Vimeo or custom iframe URL
+							  id: 'one', // Custom anchor is used with the hash:true option.
+							  caption: 'The first caption',
+							  html: $('selector'), // ...or '<div>123</div>'. Custom HTML inside the frame.
+							  fit: 'cover', // Override the global fit option.
+							  any: 'Any data relative to the frame you want to store'
+							}		
+
+		图片懒加载			<div data-img="http://s.fotorama.io/1.jpg">1</div> 懒加载
+							<a href="http://s.fotorama.io/1.jpg" data-thumb="http://s.fotorama.io/1_thumb.jpg"></a> 懒加载
+							<img src="http://s.fotorama.io/1.jpg"> 正常加载
+
+		所有配置			可以在html中设置data-width等等属性 或在js中配置
+							$('.fotorama').fotorama({
+								width: 700
+							})	
+
+		API					var $fotoramaDiv = $('#fotorama').fotorama();
+							var fotorama = $fotoramaDiv.data('fotorama');	获取API对象 可以更底层的配置 具体信息参考API
+    								
+
+	-->
+
+	<!-- <div id="shuffle-fotorama" class="fotorama fotorama-with-numbers" data-auto="false" data-shuffle="true" data-clicktransition="crossfade" data-nav="thumbs" data-loop="true" data-keyboard='{"space": true, "home": true, "end": true, "up": true, "down": true}' data-arrows="false" data-click="false" data-swipe="false" data-navposition="top">
+	  <a href="1.jpg"><img src="1_thumb.jpg"></a>
+	  <a href="2.jpg"><img src="2_thumb.jpg" width="100" height="50"></a> 默认自动生成缩略图，如想自定义缩略图添加此段代码 href="1.jpg"懒加载		
+		<div data-img="http://s.fotorama.io/1.jpg">1</div>
+		<div data-img="http://s.fotorama.io/2.jpg">2</div>
+		<div data-img="http://s.fotorama.io/3.jpg">3</div>	
+	</div> -->
+
+	<div class="fotorama">
+		<img src="http://s.fotorama.io/1.jpg">
+		<img src="http://s.fotorama.io/2.jpg">
+		<img src="http://s.fotorama.io/3.jpg">
+		<img src="http://s.fotorama.io/4.jpg">
+		<img src="http://s.fotorama.io/5.jpg">
+
+		<<!-- div data-img="http://s.fotorama.io/1.jpg">1</div>
+		<div data-img="http://s.fotorama.io/2.jpg">2</div>
+		<div data-img="http://s.fotorama.io/3.jpg">3</div>	
+		<div data-img="http://s.fotorama.io/4.jpg">2</div>
+		<div data-img="http://s.fotorama.io/5.jpg">3</div>	 -->
+
+	  <!-- <a href="http://s.fotorama.io/1.jpg" data-thumb="http://s.fotorama.io/1_thumb.jpg"></a>
+	  <a href="http://s.fotorama.io/2.jpg" data-thumb="http://s.fotorama.io/2_thumb.jpg"></a>
+	  <a href="http://s.fotorama.io/3.jpg" data-thumb="http://s.fotorama.io/3_thumb.jpg"></a>
+	  <a href="http://s.fotorama.io/4.jpg" data-thumb="http://s.fotorama.io/4_thumb.jpg"></a>
+	  <a href="http://s.fotorama.io/5.jpg" data-thumb="http://s.fotorama.io/5_thumb.jpg"></a> -->
+	</div>
+
+
+	<!-- 1. Link to jQuery (1.8 or later), -->
+	<script src="js/jquery.min.js"></script> <!-- 33 KB -->
+
+	<!-- fotorama.css & fotorama.js. -->
+	<link  href="css/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
+	<script src="js/fotorama.js"></script> <!-- 16 KB -->
+	<script>
+		$('.fotorama').fotorama();
+
+	  // $(function () {
+	  //   var $fotorama = $('#shuffle-fotorama'),
+	  //       fotorama = $fotorama.data('fotorama');//jQuery.Fotorama
+	  //   console.log(fotorama);	
+	  //   $('#shuffle').on('click', fotorama.shuffle);
+	  // });
+	</script>
+</body>
+</html>
